@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int main(void) {
-    FILE *fp = fopen("/dev/ttyACM0", "r");
+int main(int argc, const char **argv) {
+    FILE *fp = fopen(argv[1], "r");
     if (!fp) {
         perror("fopen");
         return 1;
