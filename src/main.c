@@ -2,6 +2,8 @@
 #include <unistd.h>
 
 int main(int argc, const char **argv) {
+    const char** lat_A_str = argv[2];
+    const char** lat_B_str = argv[3];
     FILE *fp = fopen(argv[1], "r");
     if (!fp) {
         perror("fopen");
