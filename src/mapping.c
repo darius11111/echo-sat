@@ -24,7 +24,7 @@ double calculate_azimuth(double lat1, double lon1, double lat2, double lon2) {
     if (azimuth < 0.0)
         azimuth += 360.0;
 
-    return azimuth;
+    return azimuth; //angle based from true north, mount must be aligned to true north
 }
 
 int main(int argc, char **argv) {
