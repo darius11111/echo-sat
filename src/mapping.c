@@ -64,11 +64,11 @@ int main(int argc, char **argv) {
 
     send_g("G90\n", serial_g); //G90 for absolute mode
                                //G91 for relative mode
-    send_g("G92\n", serial_g);
+    send_g("G92 X0 Y0 Z0\n", serial_g);
     send_g("M201 X50\n", serial_g);
     send_g("G0 F1500\n", serial_g);
 
-    //send_g("G0 X-10\n", serial_g);
+    send_g("G0 X51.09\n", serial_g);
 
     FILE *rec = fopen(argv[1], "r");
     if (!rec)
