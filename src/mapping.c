@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
         if (sscanf(line, "%lf,%lf", &lat, &lon) == 2) {
             double search_ang = calculate_azimuth(testBase_LAT, testBase_LON, lat, lon);
             printf("lon: %f, lat: %f\nANGLE(DEG):%f\n", lon, lat, search_ang);
-            move(search_ang, serial_g);
+            move2(search_ang, serial_g);
         }
     }
 
