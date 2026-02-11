@@ -26,7 +26,7 @@ double calculate_azimuth(double lat1, double lon1, double lat2, double lon2) {
     if (azimuth < 0.0)
         azimuth += 360.0;
         */
-    return azimuth; //angle based from true north, mount must be aligned to true north
+    return azimuth * -1; //angle based from true north, mount must be aligned to true north
 }
 
 const double testBase_LAT = 50.22496794111937;
@@ -64,11 +64,11 @@ int main(int argc, char **argv) {
 
     send_g("G90\n", serial_g); //G90 for absolute mode
                                //G91 for relative mode
+    send_g("M211 S0\n", serial_g);
+    send_g("M206 X0 Y0 Z0\n", serial_g);
     send_g("G92 X0 Y0 Z0\n", serial_g);
     send_g("M201 X50\n", serial_g);
     send_g("G0 F1500\n", serial_g);
-
-    send_g("G0 X51.09\n", serial_g);
 
     FILE *rec = fopen(argv[1], "r");
     if (!rec)
@@ -76,8 +76,9 @@ int main(int argc, char **argv) {
 
     double az = calculate_azimuth(testBase_LAT, testBase_LON, 52.48371990820221, 13.426799330106624);
     puts("code loading...");
-    printf("angle between coords is %f\n", az);
-    move(az, serial_g);
+    printf("winkel ist: %f\n", az);
+    move2(az, serial_g);
+    send_g("G0 X0\n", serial_g);
 
     while (fgets(line, sizeof(line), rec)) {
         if (sscanf(line, "%lf,%lf", &lat, &lon) == 2) {
