@@ -67,18 +67,20 @@ int main(int argc, char **argv) {
     send_g("M211 S0\n", serial_g);
     send_g("M206 X0 Y0 Z0\n", serial_g);
     send_g("G92 X0 Y0 Z0\n", serial_g);
-    send_g("M201 X50\n", serial_g);
-    send_g("G0 F1500\n", serial_g);
+    send_g("M201 X100\n", serial_g);
+    send_g("G0 F2000\n", serial_g);
 
     FILE *rec = fopen(argv[1], "r");
     if (!rec)
         return 1;
+    // BERLIN EXAMPLE
 
-    double az = calculate_azimuth(testBase_LAT, testBase_LON, 52.48371990820221, 13.426799330106624);
+    //double az = calculate_azimuth(testBase_LAT, testBase_LON, 52.48371990820221, 13.426799330106624);
     puts("code loading...");
-    printf("winkel ist: %f\n", az);
-    move2(az, serial_g);
-    send_g("G0 X0\n", serial_g);
+    //printf("winkel ist: %f\n", az);
+    //move2(az, serial_g);
+    //sleep(5);
+    //send_g("G0 X0\n", serial_g);
 
     while (fgets(line, sizeof(line), rec)) {
         if (sscanf(line, "%lf,%lf", &lat, &lon) == 2) {
