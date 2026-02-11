@@ -5,8 +5,6 @@ import digitalio
 import adafruit_gps
 import adafruit_bmp3xx
 import adafruit_rfm9x
-led = digitalio.DigitalInOut(board.LED)
-led.direction = digitalio.Direction.OUTPUT
 i2c = busio.I2C(board.GP13, board.GP12)
 spi = busio.SPI(clock=board.GP2, MOSI=board.GP3, MISO=board.GP4)
 cs = digitalio.DigitalInOut(board.GP5)
@@ -23,7 +21,6 @@ rfm9x.tx_power = 20
 pc = 0
 while(True):
     pc += 1
-    alt = bmp.altitude
     gps.update()
     msg = (
         f"PKT={pc},"
