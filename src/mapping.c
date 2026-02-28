@@ -29,6 +29,26 @@ double calculate_azimuth(double lat1, double lon1, double lat2, double lon2) {
     return azimuth * -1; //angle based from true north, mount must be aligned to true north
 }
 
+double calculate_altitude_angle(double lat1, double lon1, double alt1, double lat2, double lon2, double alt2) {
+    double delta_H = alt2 - alt1;
+
+    double phi1 = lat1 * DEG_TO_RAD;
+    double phi2 = lat2 * DEG_TO_RAD;
+    double delta_lambda = (lon2 - lon1) * DEG_TO_RAD;
+    double dPhi = (lat2 - lat1) * M_PI / 180.0;
+
+    double a = sin(dPhi/2.0) * sin(dPhi/2.0) +
+               cos(phi1) * cos(phi2) *
+               sin(delta_lambda/2.0) * sin(delta_lambda/2.0);
+
+    double c = 2.0 * atan2(sqrt(a), sqrt(1.0 - a));
+    double distance = 6371000 * c;
+
+    double theta = atan2(delta_H, distance);
+
+    return theta;
+}
+
 const double testBase_LAT = 50.22496794111937;
 const double testBase_LON = 8.6366650683187;
 
@@ -73,20 +93,23 @@ int main(int argc, char **argv) {
     FILE *rec = fopen(argv[1], "r");
     if (!rec)
         return 1;
-    // BERLIN EXAMPLE
+    // PARIS EXAMPLE
 
-    //double az = calculate_azimuth(testBase_LAT, testBase_LON, 52.48371990820221, 13.426799330106624);
+    double az = calculate_azimuth(49.87427, 8.65941, 48.856614, 2.35222);
     puts("code loading...");
-    //printf("winkel ist: %f\n", az);
-    //move2(az, serial_g);
-    //sleep(5);
-    //send_g("G0 X0\n", serial_g);
+    printf("winkel ist: %f\n", az);
+    move2(az, serial_g);
+    send_g("G0 Z25\n", serial_g);
+    sleep(10);
+    send_g("G0 X0\n", serial_g);
+    send_g("G0 Z-10\n", serial_g);
+    send_g("G0 Z0\n", serial_g);
 
     while (fgets(line, sizeof(line), rec)) {
         if (sscanf(line, "%lf,%lf", &lat, &lon) == 2) {
             double search_ang = calculate_azimuth(testBase_LAT, testBase_LON, lat, lon);
             printf("lon: %f, lat: %f\nANGLE(DEG):%f\n", lon, lat, search_ang);
-            move2(search_ang, serial_g);
+    //        move2(search_ang, serial_g);
         }
     }
 
