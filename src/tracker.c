@@ -32,6 +32,12 @@ void move2(double incr, int serial) {
     char cmd[128];
     snprintf(cmd, sizeof(cmd), "G0 X%.1f\n", incr);
 
-    printf("%s", cmd);
+    send_g(cmd, serial);
+}
+
+void move_alt(double incr, int serial) {
+    char cmd[128];
+    snprintf(cmd, sizeof(cmd), "G0 Z%.1f\n", incr);
+
     send_g(cmd, serial);
 }

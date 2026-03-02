@@ -52,7 +52,7 @@ double calculate_altitude_angle(double lat1, double lon1, double alt1, double la
 const double testBase_LAT = 50.22496794111937;
 const double testBase_LON = 8.6366650683187;
 
-double lat, lon;
+double lat, lon, alt;
 
 int main(int argc, char **argv) {
     char line[128];
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
     if (!rec)
         return 1;
     // PARIS EXAMPLE
-
+    /*
     double az = calculate_azimuth(49.87427, 8.65941, 48.856614, 2.35222);
     puts("code loading...");
     printf("winkel ist: %f\n", az);
@@ -104,12 +104,14 @@ int main(int argc, char **argv) {
     send_g("G0 X0\n", serial_g);
     send_g("G0 Z-10\n", serial_g);
     send_g("G0 Z0\n", serial_g);
-
+    */
     while (fgets(line, sizeof(line), rec)) {
-        if (sscanf(line, "%lf,%lf", &lat, &lon) == 2) {
+        if (sscanf(line, "%lf,%lf,%lf", &lat, &lon, &alt) == 3) { //was 2 before
             double search_ang = calculate_azimuth(testBase_LAT, testBase_LON, lat, lon);
+            double alt_ang = calculate_altitude_angle(testBase_LAT, testBase_LON, 100.0, lat, lon, alt);
             printf("lon: %f, lat: %f\nANGLE(DEG):%f\n", lon, lat, search_ang);
-    //        move2(search_ang, serial_g);
+            move2(search_ang, serial_g);
+            move_alt(alt_ang, serial_g);
         }
     }
 

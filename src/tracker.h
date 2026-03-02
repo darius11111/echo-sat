@@ -11,5 +11,6 @@
 void send_g(const char *cmd, int serial);
 void move(double incr, int serial);
 void move2(double incr, int serial);
+void move_alt(double incr, int serial);
 
 #endif // TRACKER_H_
