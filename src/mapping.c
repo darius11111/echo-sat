@@ -46,7 +46,7 @@ double calculate_altitude_angle(double lat1, double lon1, double alt1, double la
 
     double theta = atan2(delta_H, distance);
 
-    return theta;
+    return theta * RAD_TO_DEG;
 }
 
 const double testBase_LAT = 50.22496794111937;
@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
             double alt_ang = calculate_altitude_angle(testBase_LAT, testBase_LON, 100.0, lat, lon, alt);
             printf("lon: %f, lat: %f\nANGLE(DEG):%f\n", lon, lat, search_ang);
             move2(search_ang, serial_g);
-            move_alt(alt_ang, serial_g);
+           // move_alt(alt_ang, serial_g);
         }
     }
 
