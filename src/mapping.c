@@ -106,12 +106,17 @@ int main(int argc, char **argv) {
     send_g("G0 Z0\n", serial_g);
     */
     while (fgets(line, sizeof(line), rec)) {
-        if (sscanf(line, "%lf,%lf,%lf", &lat, &lon, &alt) == 3) { //was 2 before
+        printf("RAW: %s", line);
+        if (sscanf(line, "%lf,%lf,%lf", &lat, &lon, &alt) == 3) {
+            printf("parsed -> %f, %f, %f", lat, lon, alt);
+
             double search_ang = calculate_azimuth(testBase_LAT, testBase_LON, lat, lon);
             double alt_ang = calculate_altitude_angle(testBase_LAT, testBase_LON, 100.0, lat, lon, alt);
-            printf("lon: %f, lat: %f\nANGLE(DEG):%f\n", lon, lat, search_ang);
+
+            printf("Azimuth: %f deg\n", search_ang);
+            printf("Altitude angle: %f deg\n", alt_ang);
             move2(search_ang, serial_g);
-           // move_alt(alt_ang, serial_g);
+            move_alt(alt_ang, serial_g);
         }
     }
 

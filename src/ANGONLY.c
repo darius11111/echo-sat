@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <math.h>
-#include "tracker.h"
 
 #define RAD_K M_PI/180.0f
 #define DEG_TO_RAD (M_PI / 180.0)
@@ -57,26 +56,20 @@ double lat, lon, alt;
 int main(int argc, char **argv) {
     char line[128];
 
-    FILE *rec = fopen(argv[1], "r");
+    FILE *rec = fopen(argv[argc-1], "r");
     if (!rec)
         return 1;
-    // PARIS EXAMPLE
-    /*
-    double az = calculate_azimuth(49.87427, 8.65941, 48.856614, 2.35222);
-    puts("code loading...");
-    printf("winkel ist: %f\n", az);
-    move2(az, serial_g);
-    send_g("G0 Z25\n", serial_g);
-    sleep(10);
-    send_g("G0 X0\n", serial_g);
-    send_g("G0 Z-10\n", serial_g);
-    send_g("G0 Z0\n", serial_g);
-    */
+
     while (fgets(line, sizeof(line), rec)) {
-        if (sscanf(line, "%lf,%lf,%lf", &lat, &lon, &alt) == 3) { //was 2 before
+        printf("RAW: %s", line);
+        if (sscanf(line, "%lf,%lf,%lf", &lat, &lon, &alt) == 3) {
+            printf("parsed -> %f, %f, %f", lat, lon, alt);
+
             double search_ang = calculate_azimuth(testBase_LAT, testBase_LON, lat, lon);
             double alt_ang = calculate_altitude_angle(testBase_LAT, testBase_LON, 100.0, lat, lon, alt);
-            printf("lon:%f, lat:%f, AZ_ANGLE(DEG):%f\nDEC_ANG(DEG):%f\n", lon, lat, search_ang, alt_ang);
+
+            printf("Azimuth: %f deg\n", search_ang);
+            printf("Altitude angle: %f deg\n", alt_ang);
         }
     }
 
