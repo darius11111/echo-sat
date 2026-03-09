@@ -129,7 +129,7 @@ int main(int argc, char **argv) {
             printf("Altitude angle: %f deg\n", alt_ang);
             move2(search_ang, serial_g);
             double pitch_movement = calc_mm(alt_ang);
-            if (alt_ang > 0) //check
+            if (alt_ang > 20) //check
                 move_alt(pitch_movement, serial_g);
         }
     }
