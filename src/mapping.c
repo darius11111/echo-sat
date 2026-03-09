@@ -110,13 +110,12 @@ int main(int argc, char **argv) {
     printf("winkel ist: %f\n", az);
     printf("test: %f", dec);
 //    move2(az, serial_g);
-    move_alt(dec, serial_g);
-    sleep(5);
+    //move_alt(dec, serial_g);
+    //sleep(5);
 
     //send_g("G0 X0\n", serial_g);
-    send_g("G0 Z0\n", serial_g);
+    //send_g("G0 Z0\n", serial_g);
 
-    /*
 
     while (fgets(line, sizeof(line), rec)) {
         printf("RAW: %s", line);
@@ -135,7 +134,6 @@ int main(int argc, char **argv) {
         }
     }
 
-    */
     close(serial_g);
 
     return 0;
