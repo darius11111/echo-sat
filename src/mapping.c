@@ -5,6 +5,7 @@
 #define RAD_K M_PI/180.0f
 #define DEG_TO_RAD (M_PI / 180.0)
 #define RAD_TO_DEG (180.0 / M_PI)
+#define len 245.0
 
 double lon1, lat1;
 
@@ -49,8 +50,16 @@ double calculate_altitude_angle(double lat1, double lon1, double alt1, double la
     return theta * RAD_TO_DEG;
 }
 
-const double testBase_LAT = 50.22496794111937;
-const double testBase_LON = 8.6366650683187;
+double calc_mm(double ang_deg) {
+    double ang = (ang_deg - 20) * DEG_TO_RAD;
+    //double hypo = len / cos(ang);
+    double x = len * tan(ang);
+
+    return x;
+}
+
+const double testBase_LAT = 53.08558089090216;
+const double testBase_LON = 8.804766163095788;
 
 double lat, lon, alt;
 
@@ -94,17 +103,21 @@ int main(int argc, char **argv) {
     if (!rec)
         return 1;
     // PARIS EXAMPLE
-    /*
+
     double az = calculate_azimuth(49.87427, 8.65941, 48.856614, 2.35222);
+    double dec = calc_mm(30.0);
     puts("code loading...");
     printf("winkel ist: %f\n", az);
-    move2(az, serial_g);
-    send_g("G0 Z25\n", serial_g);
-    sleep(10);
-    send_g("G0 X0\n", serial_g);
-    send_g("G0 Z-10\n", serial_g);
+    printf("test: %f", dec);
+//    move2(az, serial_g);
+    move_alt(dec, serial_g);
+    sleep(5);
+
+    //send_g("G0 X0\n", serial_g);
     send_g("G0 Z0\n", serial_g);
-    */
+
+    /*
+
     while (fgets(line, sizeof(line), rec)) {
         printf("RAW: %s", line);
         if (sscanf(line, "%lf,%lf,%lf", &lat, &lon, &alt) == 3) {
@@ -116,10 +129,13 @@ int main(int argc, char **argv) {
             printf("Azimuth: %f deg\n", search_ang);
             printf("Altitude angle: %f deg\n", alt_ang);
             move2(search_ang, serial_g);
-            move_alt(alt_ang, serial_g);
+            double pitch_movement = calc_mm(alt_ang);
+            if (alt_ang > 0) //check
+                move_alt(pitch_movement, serial_g);
         }
     }
 
+    */
     close(serial_g);
 
     return 0;
