@@ -48,8 +48,8 @@ double calculate_altitude_angle(double lat1, double lon1, double alt1, double la
     return theta;
 }
 
-const double testBase_LAT = 50.22496794111937;
-const double testBase_LON = 8.6366650683187;
+const double testBase_LAT = 53.131013;
+const double testBase_LON = 9.353820;
 
 double lat, lon, alt;
 

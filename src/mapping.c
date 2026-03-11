@@ -6,6 +6,8 @@
 #define DEG_TO_RAD (M_PI / 180.0)
 #define RAD_TO_DEG (180.0 / M_PI)
 #define len 245.0
+#define ANG_MIN 20
+#define ANG_MAX 55
 
 double lon1, lat1;
 
@@ -51,15 +53,15 @@ double calculate_altitude_angle(double lat1, double lon1, double alt1, double la
 }
 
 double calc_mm(double ang_deg) {
-    double ang = (ang_deg - 20) * DEG_TO_RAD;
+    double ang = (ang_deg - ANG_MAX) * DEG_TO_RAD;
     //double hypo = len / cos(ang);
     double x = len * tan(ang);
 
     return x;
 }
 
-const double testBase_LAT = 53.13102916347916;
-const double testBase_LON = 9.353562755674204;
+const double testBase_LAT = 53.131013;
+const double testBase_LON = 9.353820;
 
 double lat, lon, alt;
 
@@ -129,7 +131,7 @@ int main(int argc, char **argv) {
             printf("Altitude angle: %f deg\n", alt_ang);
             move2(search_ang, serial_g);
             double pitch_movement = calc_mm(alt_ang);
-            if (alt_ang > 20 && alt_ang < 60) //check
+            if (alt_ang > ANG_MIN && alt_ang < ANG_MAX) //check
                move_alt(pitch_movement, serial_g);
         }
     }
