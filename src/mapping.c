@@ -58,8 +58,8 @@ double calc_mm(double ang_deg) {
     return x;
 }
 
-const double testBase_LAT = 53.08558089090216;
-const double testBase_LON = 8.804766163095788;
+const double testBase_LAT = 53.13102916347916;
+const double testBase_LON = 9.353562755674204;
 
 double lat, lon, alt;
 
@@ -120,17 +120,17 @@ int main(int argc, char **argv) {
     while (fgets(line, sizeof(line), rec)) {
         printf("RAW: %s", line);
         if (sscanf(line, "%lf,%lf,%lf", &lat, &lon, &alt) == 3) {
-            printf("parsed -> %f, %f, %f", lat, lon, alt);
+            printf("parsed -> %f, %f, %f\n", lat, lon, alt);
 
             double search_ang = calculate_azimuth(testBase_LAT, testBase_LON, lat, lon);
-            double alt_ang = calculate_altitude_angle(testBase_LAT, testBase_LON, 100.0, lat, lon, alt);
+            double alt_ang = calculate_altitude_angle(testBase_LAT, testBase_LON, 34.0, lat, lon, alt);
 
             printf("Azimuth: %f deg\n", search_ang);
             printf("Altitude angle: %f deg\n", alt_ang);
             move2(search_ang, serial_g);
             double pitch_movement = calc_mm(alt_ang);
-            if (alt_ang > 20) //check
-                move_alt(pitch_movement, serial_g);
+            if (alt_ang > 20 && alt_ang < 60) //check
+               move_alt(pitch_movement, serial_g);
         }
     }
 
